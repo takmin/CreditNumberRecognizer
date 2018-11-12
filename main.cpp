@@ -72,6 +72,7 @@ void printMenu()
 	std::cout << "load" << std::endl;
 	std::cout << "recog" << std::endl;
 	std::cout << "recog_folder" << std::endl;
+	std::cout << "recog_capture" << std::endl;
 	std::cout << "exit" << std::endl;
 }
 
@@ -129,6 +130,9 @@ int main(int argc, char * argv[])
 			std::string dir_name = AskQuestionGetString("Directory Name: ");
 			std::string save_dir = AskQuestionGetString("Save Directory: ");
 			CCNR.RecognizeFolder(dir_name, save_dir);
+		}
+		else if (opt == "recog_capture") {
+			CCNR.RecognizeVideoCapture();
 		}
 		else{
 			std::cout << "Error: Wrong Command\n" << std::endl;

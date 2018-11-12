@@ -34,6 +34,8 @@
 #include "MainAPI.h"
 #include <iostream>
 #include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/videoio/videoio.hpp>
 #include <boost/filesystem/path.hpp>
 #include "util.h"
 
@@ -134,9 +136,10 @@ void MainAPI::Recognize(const std::string& img_file, const std::string& save_nam
 	}
 
 	int num = numbers.size();
+	double font_scale = (double)card_img.cols / 300;
 	for(int i=0; i<num; i++){
 		cv::rectangle(card_img, num_pos[i], cv::Scalar(0,0,255));
-		cv::putText(card_img, Int2String(numbers[i]), cv::Point(num_pos[i].x, num_pos[i].y), cv::FONT_HERSHEY_PLAIN, 1, cv::Scalar(0,0,255));
+		cv::putText(card_img, Int2String(numbers[i]), cv::Point(num_pos[i].x, num_pos[i].y), cv::FONT_HERSHEY_PLAIN, font_scale, cv::Scalar(0,0,255), 2);
 		std::cout << numbers[i];
 		if(i < num-1)
 			std::cout << ",";
@@ -174,4 +177,58 @@ void MainAPI::RecognizeFolder(const std::string& directory, const std::string& s
 		std::string save_file = save_file_path.generic_string() + ".png";
 		Recognize(*it, save_file, false);
 	}
+}
+
+
+void MainAPI::RecognizeVideoCapture()
+{
+	cv::VideoCapture cap(0);
+
+	cv::Mat card_img;
+	cap >> card_img;
+	cv::Rect roi;
+	roi.width = card_img.cols * 0.8;
+	roi.height = roi.width * 0.6;
+	roi.x = (card_img.cols - roi.width) / 2;
+	roi.y = (card_img.rows - roi.height) / 2;
+
+	cv::namedWindow("image");
+	bool loop = true;
+	while (loop) {
+		cap >> card_img;
+		if (card_img.empty())
+			loop = false;
+		cv::Mat draw_im = card_img.clone();
+		cv::rectangle(draw_im, roi, cv::Scalar(255, 0, 0), 2);
+		cv::imshow("image", draw_im);
+		int key = cv::waitKey(1);
+		if (key > 31 && key < 128)
+			loop = false;
+	}
+
+	std::vector<int> numbers;
+	std::vector<cv::Rect> num_pos;
+	CCNR.RecognizeCreditCardNumber(card_img(roi).clone(), numbers, num_pos);
+
+	if (numbers.empty()) {
+		std::cerr << "Fail to recognize. Classifier may not be loaded." << std::endl;
+		return;
+	}
+
+	int num = numbers.size();
+	double font_scale = (double)card_img.cols / 300;
+	for (int i = 0; i<num; i++) {
+		cv::Rect pos = num_pos[i];
+		pos.x += roi.x;
+		pos.y += roi.y;
+		cv::rectangle(card_img, pos, cv::Scalar(0, 0, 255));
+		cv::putText(card_img, Int2String(numbers[i]), cv::Point(pos.x, pos.y), cv::FONT_HERSHEY_PLAIN, font_scale, cv::Scalar(0, 0, 255), 2);
+		std::cout << numbers[i];
+		if (i < num - 1)
+			std::cout << ",";
+	}
+	std::cout << std::endl;
+	cv::imshow("image", card_img);
+	cv::waitKey();
+	cv::destroyWindow("image");
 }

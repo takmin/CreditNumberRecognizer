@@ -33,6 +33,7 @@
 
 #include "EdgeDirFeatures.h"
 #include <opencv2/imgproc/imgproc.hpp>
+//#include <opencv2/highgui/highgui.hpp>
 
 namespace ccnr{
 
@@ -59,6 +60,12 @@ void EdgeDirFeatures::operator()(const cv::Mat& src_img, std::vector<cv::Mat>& f
 	// エッジを方向成分に分解
 	std::vector<cv::Mat> edge_dir;
 	ExtractEdgeDir(src_img, edge_dir, dir_num);
+	//for (int i = 0;i < dir_num;i++) {
+	//	cv::Mat im;
+	//	cv::normalize(edge_dir[i], im, 255, 0, cv::NORM_MINMAX, CV_8UC1);
+	//	cv::imshow("img", im);
+	//	cv::waitKey();
+	//}
 	
 	// フィルターの端を切り取り
 	std::vector<cv::Mat> edge_dir2;
@@ -70,6 +77,12 @@ void EdgeDirFeatures::operator()(const cv::Mat& src_img, std::vector<cv::Mat>& f
 	}
 
 	MaxPooling(edge_dir2, features, pool_size, overlap);
+	//for (int i = 0;i < dir_num;i++) {
+	//	cv::Mat im;
+	//	cv::normalize(features[i], im, 255, 0, cv::NORM_MINMAX, CV_8UC1);
+	//	cv::imshow("img", im);
+	//	cv::waitKey();
+	//}
 };
 
 
