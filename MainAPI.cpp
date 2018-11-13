@@ -109,21 +109,23 @@ void MainAPI::CreateTrainingAllFeatures(const std::string& directory, const std:
 }
 
 
-void MainAPI::LoadClassifier(const std::string& filename)
+bool MainAPI::LoadClassifier(const std::string& filename)
 {
 	if(CCNR.LoadClassifier(filename) < 0){
 		std::cerr << "Fail to load " << filename << std::endl;
+		return false;
 	}
+	return true;
 }
 
 
 
-void MainAPI::Recognize(const std::string& img_file, const std::string& save_name, bool display)
+bool MainAPI::Recognize(const std::string& img_file, const std::string& save_name, bool display)
 {
 	cv::Mat card_img = cv::imread(img_file);
 	if(card_img.empty()){
 		std::cerr << "Fail to read " << img_file << std::endl;
-		return;
+		return false;
 	}
 
 	std::vector<int> numbers;
@@ -132,7 +134,7 @@ void MainAPI::Recognize(const std::string& img_file, const std::string& save_nam
 	
 	if(numbers.empty()){
 		std::cerr << "Fail to recognize. Classifier may not be loaded." << std::endl;
-		return;
+		return false;
 	}
 
 	int num = numbers.size();
@@ -141,8 +143,8 @@ void MainAPI::Recognize(const std::string& img_file, const std::string& save_nam
 		cv::rectangle(card_img, num_pos[i], cv::Scalar(0,0,255));
 		cv::putText(card_img, Int2String(numbers[i]), cv::Point(num_pos[i].x, num_pos[i].y), cv::FONT_HERSHEY_PLAIN, font_scale, cv::Scalar(0,0,255), 2);
 		std::cout << numbers[i];
-		if(i < num-1)
-			std::cout << ",";
+		//if(i < num-1)
+		//	std::cout << ",";
 	}
 	std::cout << std::endl;
 	if(display){
@@ -152,37 +154,53 @@ void MainAPI::Recognize(const std::string& img_file, const std::string& save_nam
 		cv::destroyWindow("Recognize");
 	}
 
-	bool ret = cv::imwrite(save_name, card_img);
-	if(!ret){
-		std::cerr << "Fail to save " << save_name << std::endl;
+	if (!save_name.empty()) {
+		bool ret = cv::imwrite(save_name, card_img);
+		if (!ret) {
+			std::cerr << "Fail to save " << save_name << std::endl;
+			return false;
+		}
+		else {
+			std::cout << "Save " << save_name << std::endl;
+		}
 	}
-	else{
-		std::cout << "Save " << save_name << std::endl;
-	}
+	return true;
 }
 
 
-void MainAPI::RecognizeFolder(const std::string& directory, const std::string& save_dir)
+bool MainAPI::RecognizeFolder(const std::string& directory, const std::string& save_dir)
 {
 	std::vector<std::string> img_list;
 	bool ret = ReadImageFilesInDirectory(directory, img_list);
 	if(!ret){
 		std::cerr << "Fail to load images in " << directory << std::endl;
-		return;
+		return false;
 	}
 	
 	std::vector<std::string>::iterator it, it_end = img_list.end();
-	for(it = img_list.begin(); it != it_end; it++){
-		boost::filesystem::path save_file_path = boost::filesystem::path(save_dir) / boost::filesystem::path(*it).stem();
-		std::string save_file = save_file_path.generic_string() + ".png";
-		Recognize(*it, save_file, false);
+	if (save_dir.empty()) {
+		for (it = img_list.begin(); it != it_end; it++) {
+			Recognize(*it, std::string(), false);
+		}
 	}
+	else {
+		for (it = img_list.begin(); it != it_end; it++) {
+			boost::filesystem::path save_file_path = boost::filesystem::path(save_dir) / boost::filesystem::path(*it).stem();
+			std::string save_file = save_file_path.generic_string() + ".png";
+			Recognize(*it, save_file, false);
+		}
+	}
+	return true;
 }
 
 
-void MainAPI::RecognizeVideoCapture()
+bool MainAPI::RecognizeVideoCapture()
 {
 	cv::VideoCapture cap(0);
+	if (!cap.isOpened()) {
+		std::cerr << "Fail to open camera" << std::endl;
+		return false;
+	}
 
 	cv::Mat card_img;
 	cap >> card_img;
@@ -212,7 +230,7 @@ void MainAPI::RecognizeVideoCapture()
 
 	if (numbers.empty()) {
 		std::cerr << "Fail to recognize. Classifier may not be loaded." << std::endl;
-		return;
+		return false;
 	}
 
 	int num = numbers.size();
@@ -224,11 +242,13 @@ void MainAPI::RecognizeVideoCapture()
 		cv::rectangle(card_img, pos, cv::Scalar(0, 0, 255));
 		cv::putText(card_img, Int2String(numbers[i]), cv::Point(pos.x, pos.y), cv::FONT_HERSHEY_PLAIN, font_scale, cv::Scalar(0, 0, 255), 2);
 		std::cout << numbers[i];
-		if (i < num - 1)
-			std::cout << ",";
+		//if (i < num - 1)
+		//	std::cout << ",";
 	}
 	std::cout << std::endl;
 	cv::imshow("image", card_img);
 	cv::waitKey();
 	cv::destroyWindow("image");
+
+	return true;
 }

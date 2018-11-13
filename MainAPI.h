@@ -48,13 +48,13 @@ public:
 
 	void CreateTrainingAllFeatures(const std::string& directory, const std::string& save_diretory);
 
-	void LoadClassifier(const std::string& filename);
+	bool LoadClassifier(const std::string& filename);
 
-	void Recognize(const std::string& img_file, const std::string& save_name = std::string(), bool display = true);
+	bool Recognize(const std::string& img_file, const std::string& save_name = std::string(), bool display = true);
 
-	void RecognizeFolder(const std::string& dir_name, const std::string& save_dir);
+	bool RecognizeFolder(const std::string& dir_name, const std::string& save_dir);
 
-	void RecognizeVideoCapture();
+	bool RecognizeVideoCapture();
 
 	ccnr::CreditNumberRecog	CCNR;
 };

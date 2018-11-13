@@ -41,6 +41,21 @@
 
 std::string Int2String(int x);
 
+inline std::vector<std::string> ImageExtentions() {
+	std::string image_exts[] = { ".jpg", ".JPG", ".jpeg", ".JPEG", ".bmp", ".BMP",
+		".png", ".PNG", ".dib", ".DIB", ".pbm", ".PBM", ".pgm", ".PGM",
+		".ppm", ".PPM", ".sr", ".SR", ".ras", ".RAS" };
+
+	return std::vector<std::string>(image_exts, image_exts + sizeof(image_exts) / sizeof(std::string));
+}
+
+bool hasExtention(const std::string& file_name, const std::vector<std::string>& extentions);
+
+inline bool hasImageExtention(const std::string& filename) {
+	return hasExtention(filename, ImageExtentions());
+}
+
+
 bool ReadImageFilesInDirectory(const std::string& img_dir, std::vector<std::string>& image_lists);
 
 void DrawHistogram(const cv::Mat& histogram, cv::Mat& draw_img, int width);

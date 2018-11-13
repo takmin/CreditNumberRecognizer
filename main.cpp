@@ -37,9 +37,119 @@
 #endif
 
 #include <iostream>
+#include <boost/program_options.hpp>
+#include <boost/filesystem/operations.hpp>
 #include "MainAPI.h"
+#include "util.h"
+
+using namespace boost::program_options;
+using namespace boost::filesystem;
+
+///////////// Command Line Execution Mode ////////////////////
+void print_help(const options_description& opt)
+{
+	std::cout << "CreditNumberRecog input [option]" << std::endl;
+	std::cout << opt << std::endl;
+}
 
 
+bool parse_command(int argc, char* argv[], std::string& input,
+	std::string& model_file, std::string& output, bool& use_camera)
+{
+	// Setting of option arguments
+	options_description opt("option");
+	opt.add_options()
+		("input", value<std::string>(), "Input image file or directory path (MUST)")
+		("help,h", "print help")
+		("model,m", value<std::string>()->default_value("CreditModel.txt"), "Trained model file path")
+		("output,o", value<std::string>()->default_value(std::string()), "Generate output image")
+		("camera,c", "Use web camera input");
+
+	// Arguments
+	positional_options_description p;
+	p.add("input", 1);
+
+	variables_map argmap;
+	try {
+		// Obtain command arguments
+		parsed_options parsed = command_line_parser(argc, argv).options(opt).allow_unregistered().positional(p).run();	// コマンドラインのパース
+		store(parsed, argmap);	// store parsed command options into argmap
+		notify(argmap);
+
+		// Print Help
+		if (argmap.count("help")) {
+			print_help(opt);
+			return false;
+		}
+
+		use_camera = !argmap["camera"].empty();
+		input = argmap["input"].as<std::string>();
+		output = argmap["output"].as<std::string>();
+		model_file = argmap["model"].as<std::string>();
+
+		////// verify command arguments ///////
+		if (!use_camera) {
+			if(input.empty()) {
+				throw std::exception("no arugument of input");
+			}
+			else if (hasImageExtention(input)) {
+				if (!output.empty() && !hasImageExtention(output)) {
+					throw std::exception("\"output\" must be image file path.");
+				}
+			}
+			else if (is_directory(path(input))) {
+				if (!output.empty() && !is_directory(path(output))) {
+					throw std::exception("\"output\" must be directory path.");
+				}
+			}
+			else {
+				throw std::exception("wrong input format");
+			}
+		}		
+	}
+	catch (const std::exception& e)
+	{
+		std::cout << std::endl << e.what() << std::endl;
+		print_help(opt);
+		return false;
+	}
+
+	return true;
+}
+
+
+
+int CommandLineExe(int argc, char * argv[])
+{
+	MainAPI CCNR;
+	std::string conf_file, input, output, model_file;
+	bool use_camera;
+	if (!parse_command(argc, argv, input, model_file, output, use_camera))
+		return -1;
+
+	try {
+		if (!CCNR.LoadClassifier(model_file))
+			return -1;
+
+		if (use_camera) {
+			CCNR.RecognizeVideoCapture();
+		}
+		else if (hasImageExtention(input)) {
+			CCNR.Recognize(input, output, false);
+		}
+		else if (is_directory(path(input))) {
+			CCNR.RecognizeFolder(input, output);
+		}
+		return 0;
+	}
+	catch (std::exception& e) {
+		std::cout << std::endl << e.what() << std::endl;
+		return -1;
+	}
+}
+
+
+///////////////// Interactive Mode //////////////////
 std::string AskQuestionGetString(const std::string& question){
 	std::cout << question;
 	std::string ans;
@@ -83,6 +193,11 @@ int main(int argc, char * argv[])
 #if _TEST_
 	::testing::InitGoogleTest(&argc, argv);
 #endif
+
+	if (argc > 1) {
+		return CommandLineExe(argc, argv);
+	}
+
 	MainAPI CCNR;
 	bool exitflag1 = false;
 	std::string opt;

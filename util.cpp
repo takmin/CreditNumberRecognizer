@@ -45,6 +45,19 @@ std::string Int2String(int x)
 	return strstr.str();
 }
 
+bool hasExtention(const std::string& file_name, const std::vector<std::string>& extentions)
+{
+	std::string ext = boost::filesystem::path(file_name).extension().string();
+
+	std::vector<std::string>::const_iterator it = extentions.begin(),
+		it_e = extentions.end();
+	for (; it != it_e; it++) {
+		if (ext == *it)
+			return true;
+	}
+	return false;
+}
+
 // ディレクトリから画像ファイル名一覧を取得
 bool ReadImageFilesInDirectory(const std::string& img_dir, std::vector<std::string>& image_lists)
 {
