@@ -27,19 +27,20 @@ message(STATUS "    include path: ${OpenCV_INCLUDE_DIRS}")
 
 #--------------------------------------
 # Find Boost
-set(Boost_USE_STATIC_LIBS        ON)
+#set(Boost_USE_STATIC_LIBS        OFF)
 set(Boost_USE_MULTITHREADED      ON)
-set(Boost_USE_STATIC_RUNTIME     OFF)
+#set(Boost_USE_STATIC_RUNTIME     OFF)
 find_package(Boost 1.36 REQUIRED
              COMPONENTS filesystem program_options)
 message("## Boost_INCLUDE_DIRS: ${Boost_INCLUDE_DIRS}")
-message("## Boost_LIBRARYDIR: ${Boost_LIBRARYDIR}")
+message("## Boost_LIBRARY_DIRS: ${Boost_LIBRARY_DIRS}")
 
 if(NOT Boost_FOUND)
-
-#   Config options
-set(BOOST_ROOT ${BOOST_ROOT} CACHE PATH "Set boost root directory" FORCE)
-    set(BOOST_LIBRARYDIR ${BOOST_LIBRARYDIR} CACHE PATH "Set boost library directory" FORCE)
+    #   Config options
+    set(BOOST_ROOT ${BOOST_ROOT} CACHE PATH "Set boost root directory" FORCE)
+    set(Boost_LIBRARY_DIRS ${Boost_LIBRARY_DIRS} CACHE PATH "Set boost library directory" FORCE)
+    set(Boost_USE_STATIC_LIBS ${Boost_USE_STATIC_LIBS} CACHE BOOL "Set use static library" FORCE)
+    set(Boost_USE_STATIC_RUNTIME ${Boost_USE_STATIC_LIBS} CACHE BOOL "Set use static runtime" FORCE)
     message(FATAL_ERROR "Fail to find Boost")
 endif()
 
@@ -52,4 +53,3 @@ add_executable(CreditNumberRecognizer main.cpp MainAPI.cpp CreditNumberRecog.cpp
 set_target_properties(CreditNumberRecognizer PROPERTIES VERSION ${serial})
 
 target_link_libraries(CreditNumberRecognizer ${OpenCV_LIBS} Boost::filesystem Boost::program_options)
-

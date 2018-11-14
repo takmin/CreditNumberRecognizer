@@ -75,7 +75,7 @@ public:
 	/////////////////////////////////////
 
 	//! アピアランスに基づいたコスト関数の生成
-	static void CreateAppearanceCosts(const cv::Mat& edge_img, std::vector<std::vector<double>>& app_costs);
+	static void CreateAppearanceCosts(const cv::Mat& edge_img, std::vector<std::vector<double> >& app_costs);
 
 	//! 文字間の区切り位置に基づいたコスト関数の生成（正則化項）
 	static void CreateRegularizationCosts(std::vector<double>& reg_costs, int window_size, double sigma);
@@ -90,7 +90,7 @@ public:
 	\param[in] sring_len_div 文字列の長さの標準偏差
 	\paran[in] char_pattern 区切り文字パターン
 	*/
-	static double ExtractCharRange(std::vector<int>& char_breaks, const std::vector<std::vector<double>>& app_costs,
+	static double ExtractCharRange(std::vector<int>& char_breaks, const std::vector<std::vector<double> >& app_costs,
 		const std::vector<double>& pos_costs, float avg_string_len, float string_len_div,
 		const std::vector<int>& char_pattern, double init_cost = 10000);
 
@@ -101,7 +101,7 @@ public:
 
 private:
 	std::vector<CREDIT_PATTERN> _PATTERN_TYPES;
-	std::vector<std::vector<int>> _CHAR_BREAK_PATTERNS;
+	std::vector<std::vector<int> > _CHAR_BREAK_PATTERNS;
 
 	//! カード番号のある行から文字間の区切り位置を算出
 	/*!
@@ -152,7 +152,7 @@ private:
 		int pos, double* min_cost, int* min_position);
 
 	//! クレジットカード番号列の尤度評価
-	static void EvaluateNumberStrings(const std::vector<std::pair<int,int>>& line_pos, std::vector<double>& scores, const std::vector<float>& prj);
+	static void EvaluateNumberStrings(const std::vector<std::pair<int,int> >& line_pos, std::vector<double>& scores, const std::vector<float>& prj);
 };
 
 }

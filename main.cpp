@@ -72,7 +72,8 @@ bool parse_command(int argc, char* argv[], std::string& input,
 	variables_map argmap;
 	try {
 		// Obtain command arguments
-		parsed_options parsed = command_line_parser(argc, argv).options(opt).allow_unregistered().positional(p).run();	// コマンドラインのパース
+		// parse command line
+		parsed_options parsed = command_line_parser(argc, argv).options(opt).allow_unregistered().positional(p).run();
 		store(parsed, argmap);	// store parsed command options into argmap
 		notify(argmap);
 
@@ -90,20 +91,20 @@ bool parse_command(int argc, char* argv[], std::string& input,
 		////// verify command arguments ///////
 		if (!use_camera) {
 			if(input.empty()) {
-				throw std::exception("no arugument of input");
+				throw std::invalid_argument("no arugument of input");
 			}
 			else if (hasImageExtention(input)) {
 				if (!output.empty() && !hasImageExtention(output)) {
-					throw std::exception("\"output\" must be image file path.");
+					throw std::invalid_argument("\"output\" must be image file path.");
 				}
 			}
 			else if (is_directory(path(input))) {
 				if (!output.empty() && !is_directory(path(output))) {
-					throw std::exception("\"output\" must be directory path.");
+					throw std::invalid_argument("\"output\" must be directory path.");
 				}
 			}
 			else {
-				throw std::exception("wrong input format");
+				throw std::invalid_argument("wrong input format");
 			}
 		}		
 	}

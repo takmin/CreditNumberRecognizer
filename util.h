@@ -78,7 +78,7 @@ template<typename T> void SaveVector(const std::string& filename, const std::vec
 
 
 //! std::vector<std::vector>‚ðCSVƒtƒ@ƒCƒ‹‚Æ‚µ‚Ä•Û‘¶
-template<typename T> void SaveVectorCSV(const std::string& filename, const std::vector<std::vector<T>>& src_vector)
+template<typename T> void SaveVectorCSV(const std::string& filename, const std::vector<std::vector<T> >& src_vector)
 {
 	std::ofstream csv_ofs(filename);
 	int rows = src_vector.size();
