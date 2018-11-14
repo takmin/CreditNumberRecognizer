@@ -236,7 +236,7 @@ int NumberRecog::LoadOVR(const std::string& train_file, const cv::Size& filter_s
 
 
 int NumberRecog::SvmCoeff2Filters(const cv::Mat& svm_param, const cv::Size& filter_size, 
-	std::vector<std::vector<cv::Mat>>& filterOVR, std::vector<double>& biasOVR, int type)
+	std::vector<std::vector<cv::Mat> >& filterOVR, std::vector<double>& biasOVR, int type)
 {
 	filterOVR.clear();
 	biasOVR.clear();

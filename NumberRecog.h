@@ -84,13 +84,13 @@ private:
 
 	//! One-vs-Rest SVM
 	std::vector<double> _BiasOVR;
-	std::vector<std::vector<cv::Mat>> _FilterOVR;
+	std::vector<std::vector<cv::Mat> > _FilterOVR;
 
 	//! SVMの係数をフィルタ形式に変換
 	static int SvmCoeff2Filters(const cv::Mat& svm_coeff, const cv::Size& filter_size, std::vector<cv::Mat>& filters, double& bias, int type = -1);
 
 	//! SVMの係数をフィルタ形式に変換
-	static int SvmCoeff2Filters(const cv::Mat& svm_coeff, const cv::Size& filter_size, std::vector<std::vector<cv::Mat>>& filters, std::vector<double>& bias, int type = -1);
+	static int SvmCoeff2Filters(const cv::Mat& svm_coeff, const cv::Size& filter_size, std::vector<std::vector<cv::Mat> >& filters, std::vector<double>& bias, int type = -1);
 
 	//! 画像特徴に学習フィルタをかけて応答を求める
 	static void ScoreMap(const std::vector<cv::Mat>& feature_map, cv::Mat& response_map, const std::vector<cv::Mat>& filter, double bias);

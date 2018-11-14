@@ -109,13 +109,13 @@ void NumberDetect::ConvertXtoRects(const std::vector<int>& breaks, std::vector<c
 }
 
 
-void NumberDetect::EvaluateNumberStrings(const std::vector<std::pair<int,int>>& line_pos, std::vector<double>& scores, const std::vector<float>& prj)
+void NumberDetect::EvaluateNumberStrings(const std::vector<std::pair<int,int> >& line_pos, std::vector<double>& scores, const std::vector<float>& prj)
 {
 	// カード番号の位置は中心よりやや下あたり
 	float myu = 0.6 * prj.size();	// 平均
 	float delta = 0.5 * prj.size();	//標準偏差
 
-	std::vector<std::pair<int,int>>::const_iterator cit, cit_end = line_pos.end();
+	std::vector<std::pair<int,int> >::const_iterator cit, cit_end = line_pos.end();
 	for(cit = line_pos.begin(); cit != cit_end; cit++){
 		float center = (float)cit->second / 2 + cit->first;
 		float tmp = (center - myu) / delta;
@@ -139,7 +139,7 @@ void NumberDetect::DetectStringHeight(const cv::Mat& edge_img, std::vector<cv::R
 	std::vector<float> gprj_vec;
 	Mat2Vector(gprj, gprj_vec);
 
-	std::vector<std::pair<int,int>> msers;
+	std::vector<std::pair<int,int> > msers;
 	Mser1D(gprj_vec, msers, 1.0, 2.0, min_char_height, max_char_height);
 //	Mser1D(gprj_vec, msers, 1.0, 2.0, 20, 32);
 
@@ -330,7 +330,7 @@ void NumberDetect::CreateBlockDeriv(const cv::Mat& prj, int block_size, cv::Mat&
 
 
 //! アピアランスに基づいたコスト関数の生成
-void NumberDetect::CreateAppearanceCosts(const cv::Mat& edge_img, std::vector<std::vector<double>>& app_costs)
+void NumberDetect::CreateAppearanceCosts(const cv::Mat& edge_img, std::vector<std::vector<double> >& app_costs)
 {
 	cv::Mat prj, nprj, gprj;
 	Projection(edge_img, prj);
@@ -433,7 +433,7 @@ void NumberDetect::MinScorePositions(const std::vector<double>& app_costs, const
 
 
 //! まず文字列の両端を算出したあとで、領域を均等割りしてそれぞれで最適な場所を算出
-double NumberDetect::ExtractCharRange(std::vector<int>& char_breaks, const std::vector<std::vector<double>>& app_costs,
+double NumberDetect::ExtractCharRange(std::vector<int>& char_breaks, const std::vector<std::vector<double> >& app_costs,
 	const std::vector<double>& pos_costs, float avg_string_len, float string_len_div, const std::vector<int>& char_pattern, double init_cost)
 {
 	std::vector<double> start_costs, end_costs;
@@ -494,7 +494,7 @@ double NumberDetect::ExtractCharRange(std::vector<int>& char_breaks, const std::
 
 double NumberDetect::DetectCharacterRange(const cv::Mat& edge_img, const cv::Rect& area, std::vector<int>& break_pos, CREDIT_PATTERN& pattern, double min_cost) const
 {
-	std::vector<std::vector<double>> app_costs;
+	std::vector<std::vector<double> > app_costs;
 	CreateAppearanceCosts(edge_img(area).clone(), app_costs);
 
 	std::vector<double> reg_costs, length_costs;
@@ -504,7 +504,7 @@ double NumberDetect::DetectCharacterRange(const cv::Mat& edge_img, const cv::Rec
 	CreateRegularizationCosts(reg_costs, win_size, _char_width_div * char_size);
 
 	std::vector<double> min_costs;
-	std::vector<std::vector<int>> char_break_positions;
+	std::vector<std::vector<int> > char_break_positions;
 	int min_idx = 0;
 	for(int i=0; i<_PATTERN_TYPES.size(); i++){
 		float avg_length = char_size * (_CHAR_BREAK_PATTERNS[i].size() - 1);

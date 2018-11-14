@@ -51,7 +51,7 @@ template <typename T>
 void argsort_vector(const std::vector<T>& vec, std::vector<int>& idx)
 {
 	int vec_size = vec.size();
-	std::vector<struct ARG_SORTER<T>> sort_pairs;
+	std::vector<struct ARG_SORTER<T> > sort_pairs;
 	for(int i=0; i<vec_size; i++){
 		struct ARG_SORTER<T> argsorter;
 		argsorter.val = vec[i];

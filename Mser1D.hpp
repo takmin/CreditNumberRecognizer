@@ -126,7 +126,7 @@ void CreateMserRegionTree(const std::vector<_T>& histogram, std::vector<REGION_1
 \param[in] tree_regions 全しきい値での全領域とその木構造
 \param[out] clustered_idx 木構造を子ノードが１となる領域でクラスタリングしたID（しきい値小から大の順に）
 */
-void ClusterRegionsFromTree(const std::vector<REGION_1D>& tree_regions, std::vector<std::vector<int>>& clustered_idx)
+void ClusterRegionsFromTree(const std::vector<REGION_1D>& tree_regions, std::vector<std::vector<int> >& clustered_idx)
 {
 	std::vector<bool> check(tree_regions.size(), false);
 	for(int i=0; i<tree_regions.size(); i++){
@@ -153,11 +153,11 @@ void ClusterRegionsFromTree(const std::vector<REGION_1D>& tree_regions, std::vec
 \param[in] clustered_idx 木構造を子ノードが１となる領域でクラスタリングしたID（しきい値小から大の順に）
 */
 void AreaVariation(const std::vector<REGION_1D>& tree_regions, 
-	std::vector<std::vector<double>>& area_variation, 
-	const std::vector<std::vector<int>>& clustered_idx,
+	std::vector<std::vector<double> >& area_variation, 
+	const std::vector<std::vector<int> >& clustered_idx,
 	int delta, int min_area, int max_area)
 {
-	std::vector<std::vector<int>>::const_iterator it, it_end = clustered_idx.end();
+	std::vector<std::vector<int> >::const_iterator it, it_end = clustered_idx.end();
 	for(it = clustered_idx.begin(); it != it_end; it++){
 		std::vector<double> variation;
 		if(it->size() < 2*delta + 1 || 
@@ -190,8 +190,8 @@ void AreaVariation(const std::vector<REGION_1D>& tree_regions,
 \param[in] area_variation clustered_idxに対応する面積の変化量
 \param[in] mser_idx area_variationで極小値をとるインデックス
 */
-void GetLocalVariationMaxima(const std::vector<std::vector<int>>& clustered_idx,
-	const std::vector<std::vector<double>>& area_variation, 
+void GetLocalVariationMaxima(const std::vector<std::vector<int> >& clustered_idx,
+	const std::vector<std::vector<double> >& area_variation, 
 	std::vector<int>& mser_idx)
 {
 	int num_vec = area_variation.size();
@@ -241,7 +241,7 @@ void GetLocalVariationMaxima(const std::vector<std::vector<int>>& clustered_idx,
 \param[in] mask 処理マスク
 */
 template<typename _T> 
-void Mser1D(const std::vector<_T>& histogram, std::vector<std::pair<int, int>>& msers, 
+void Mser1D(const std::vector<_T>& histogram, std::vector<std::pair<int, int> >& msers, 
 	double step = 1.0, double delta = 1.0, int min_area = 1, int max_area = -1, 
 	const std::vector<unsigned char>& mask = std::vector<unsigned char>())
 {
@@ -254,14 +254,14 @@ void Mser1D(const std::vector<_T>& histogram, std::vector<std::pair<int, int>>& 
 	CreateMserRegionTree(masked_histogram, regions, 0, step);
 
 	// 木構造を分解してクラスタリング(小ノード数が１である連続領域)
-	std::vector<std::vector<int>> clustered_region_indices;
+	std::vector<std::vector<int> > clustered_region_indices;
 	ClusterRegionsFromTree(regions, clustered_region_indices);
 
 	// 領域の変化量を算出
 	int i_delta = (int)(delta / step + 0.5);
 	if(max_area < 1)
 		max_area = histogram.size();
-	std::vector<std::vector<double>> area_variation;
+	std::vector<std::vector<double> > area_variation;
 	AreaVariation(regions, area_variation, clustered_region_indices, i_delta, min_area, max_area);
 
 	// 領域の変化量の局所的に最小なインデックスを算出
