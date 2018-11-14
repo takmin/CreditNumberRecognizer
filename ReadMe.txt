@@ -25,6 +25,8 @@ I developed this program with the environment below:
 I avoided to use windows-dependent code, thus I expect that this program can be exported to other environments.
 
 How to build (Linux)ÅF
+Before install this program, you MUST install OpenCV(https://opencv.org/) and Boost(https://www.boost.org/).
+
 $ git clone https://github.com/takmin/CreditNumberRecognizer.git
 $ cd CreditNumberRecognizer
 $ mkdir build

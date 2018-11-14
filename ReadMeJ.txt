@@ -21,6 +21,7 @@ CreditNumberRecognizer.zip‚ğ‰ğ“€‚·‚é‚ÆAWindows”Å‚ÌÀsƒtƒ@ƒCƒ‹‚ğ‚·‚®—˜—p‚Å‚«‚Ü‚
 - Boost 1.68
 
 ƒrƒ‹ƒh•û–@(Linux)F
+–‘O‚ÉOpenCV(https://opencv.org/)‚Æ(https://www.boost.org/)‚ªƒCƒ“ƒXƒg[ƒ‹‚³‚ê‚Ä‚¢‚é‚à‚Ì‚Æ‚µ‚Ü‚·B
 $ git clone https://github.com/takmin/CreditNumberRecognizer.git
 $ cd CreditNumberRecognizer
 $ mkdir build
