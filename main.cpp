@@ -48,7 +48,7 @@ using namespace boost::filesystem;
 ///////////// Command Line Execution Mode ////////////////////
 void print_help(const options_description& opt)
 {
-	std::cout << "CreditNumberRecog input [option]" << std::endl;
+	std::cout << "CreditNumberRecognizer input [option]" << std::endl;
 	std::cout << opt << std::endl;
 }
 
@@ -59,10 +59,10 @@ bool parse_command(int argc, char* argv[], std::string& input,
 	// Setting of option arguments
 	options_description opt("option");
 	opt.add_options()
-		("input", value<std::string>(), "Input image file or directory path (MUST)")
+		("input", value<std::string>(), "Input image file or directory path")
 		("help,h", "print help")
 		("model,m", value<std::string>()->default_value("CreditModel.txt"), "Trained model file path")
-		("output,o", value<std::string>()->default_value(std::string()), "Generate output image")
+		("output,o", value<std::string>()->default_value(std::string()), "Generate output image or directory path")
 		("camera,c", "Use web camera input");
 
 	// Arguments

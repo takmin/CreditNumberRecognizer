@@ -1,23 +1,37 @@
-CreditRecognizer
+CreditNumberRecognizer
+
+2018/11/14 Version 1.2
+- ƒRƒ}ƒ“ƒhƒ‰ƒCƒ“‚©‚ç’¼ÚÀs‚Å‚«‚é‹@”\’Ç‰Á
+- ƒJƒƒ‰ƒLƒƒƒvƒ`ƒƒ‚©‚çg—p‚·‚é‹@”\‚ğ’Ç‰Á
+- CMakeFile.txt‚Ì’Ç‰Á
+- ‘Î‰OpenCV‚Ìƒo[ƒWƒ‡ƒ“ƒAƒbƒv
 
 2015/04/26 First Version
 
+--------------------
 –{ƒvƒƒOƒ‰ƒ€‚Í‰æ‘œ‚©‚çƒNƒŒƒWƒbƒgƒJ[ƒh”Ô†‚ğ“Ç‚İæ‚è‚Ü‚·B
 ƒNƒŒƒWƒbƒgƒJ[ƒh‚ğ‚Å‚«‚é‚¾‚¯‰æ–Ê‚¢‚Á‚Ï‚¢‚ÉAŒX‚«‚ª‚È‚¢‚æ‚¤‚ÉB‰e‚µ‚ÄA‰æ‘œ‚ğ•Û‘¶‚µ‚Ä‰º‚³‚¢B
 
-CreditNumberRecognizer.zip‚ğ‰ğ“€‚·‚é‚ÆAWindows”Å‚ÌÀsƒtƒ@ƒCƒ‹‚ğ‚·‚®—˜—p‚Å‚«‚Ü‚·Bi—vVisualStuido2013ƒ‰ƒ“ƒ^ƒCƒ€ƒ‰ƒCƒuƒ‰ƒŠj
+CreditNumberRecognizer.zip‚ğ‰ğ“€‚·‚é‚ÆAWindows”Å‚ÌÀsƒtƒ@ƒCƒ‹‚ğ‚·‚®—˜—p‚Å‚«‚Ü‚·Bi—vVisualStuido2017ƒ‰ƒ“ƒ^ƒCƒ€ƒ‰ƒCƒuƒ‰ƒŠj
 
-®A–{ƒvƒƒOƒ‰ƒ€‚ÍˆÈ‰º‚ÌŠÂ‹«‚ÅŠJ”­‚³‚ê‚Ü‚µ‚½B
-- Windows8.1
-- Visual Stuido2013
-- OpenCV 2.4.10
-- Boost 1.55
+®A–{ƒvƒƒOƒ‰ƒ€‚ÍˆÈ‰º‚ÌŠÂ‹«‚Å“®ìŠm”F‚³‚ê‚Ü‚µ‚½B
+- Windows10 & CentOS7.4
+- Visual Stuido2017
+- OpenCV 3.4.3
+- Boost 1.68
 
-“Á‚ÉWindowsˆË‘¶‚ÌƒR[ƒh‚Íg‚Á‚Ä‚¢‚È‚¢‚Ì‚ÅA‘¼‚ÌŠÂ‹«‚É‚àƒGƒNƒXƒ|[ƒg‚Å‚«‚é‚Æv‚¢‚Ü‚·B
+ƒrƒ‹ƒh•û–@(Linux)F
+$ git clone https://github.com/takmin/CreditNumberRecognizer.git
+$ cd CreditNumberRecognizer
+$ mkdir build
+$ cd build
+$ cmake ..
+$ make
+‚±‚±‚ÅACreditNumberRecognizer‚Æ‚¢‚¤Àsƒtƒ@ƒCƒ‹‚ª¶¬‚³‚ê‚Ü‚·B
 
 
 g—pè‡F
-1. CreditRecognizer.exe‚ğ‹N“®
+1. CreditNumberRecognizer‚ğ‹N“®
 2. "command:"‚Æ‚¢‚¤ƒvƒƒ“ƒvƒg‚ªo‚é‚Ì‚ÅA"load"‚Æ‘Å‚¿‚İƒŠƒ^[ƒ“
 3. "Classifier File:"‚Æ‚¢‚¤ƒvƒƒ“ƒvƒg‚ªo‚é‚Ì‚ÅA“¯«‚µ‚½"CreditModel.txt"‚Ö‚Ì–¾“ú‚ğw’è
 4. "command:"ƒvƒƒ“ƒvƒg‚ÅA"recog"‚Æ‚¤‚¿ƒŠƒ^[ƒ“
@@ -27,7 +41,21 @@ CreditNumberRecognizer.zip‚ğ‰ğ“€‚·‚é‚ÆAWindows”Å‚ÌÀsƒtƒ@ƒCƒ‹‚ğ‚·‚®—˜—p‚Å‚«‚Ü‚
 
 ‚»‚Ì‘¼F
 E"recog_folder"‚Æ“ü—Í‚µA"Directory Name:"ƒvƒƒ“ƒvƒg‚ÅƒtƒHƒ‹ƒ_–¼‚ğw’è‚·‚é‚ÆAw’è‚µ‚½ƒtƒHƒ‹ƒ_“à‚É‚ ‚é‰æ‘œ‚ğ‘S‚ÄˆêŠ‡‚Åˆ—‚µ‚Ä‚­‚ê‚Ü‚·Bo—Íæ‚Í"Save Directory"‚Åw’è‚µ‚½ƒtƒHƒ‹ƒ_‚Ì’†‚É•Û‘¶‚³‚ê‚Ü‚·B
+E"recog_capture"‚Æ“ü—Í‚·‚é‚ÆAƒJƒƒ‰ƒLƒƒƒvƒ`ƒƒ‚ª‰æ–Ê‚ª—§‚¿ã‚ª‚è‚Ü‚·B˜g“à‚ÉƒNƒŒƒWƒbƒgƒJ[ƒh‚ğ“ü‚ê‚Ä‰½‚©ƒL[‚ğ‰Ÿ‚·‚ÆA‰æ‘œ‚ªƒLƒƒƒvƒ`ƒƒ‚³‚ê‚Ä”Ô†‚ª”F¯‚³‚ê‚Ü‚·B
 EƒRƒ}ƒ“ƒhƒvƒƒ“ƒvƒg‚Å"h"‚Æ‚¤‚Â‚Æg—p‰Â”\‚ÈƒRƒ}ƒ“ƒhˆê——‚ªo‚Ü‚·B
+
+
+ƒRƒ}ƒ“ƒhƒ‰ƒCƒ“‚©‚ç’¼ÚÀsF
+EƒRƒ}ƒ“ƒhƒ‰ƒCƒ“‚©‚ç’¼ÚÀs‚µ‚½‚¢ê‡‚ÍˆÈ‰º‚Ì‚æ‚¤‚Éˆø”‚ğw’è‚µ‚Ü‚·B
+---
+CreditNumberRecognizer input [option]
+option:
+  input                                 “ü—Í‰æ‘œ‚Ü‚½‚Í‰æ‘œ‚Ì“ü‚Á‚½ƒtƒHƒ‹ƒ_‚Ö‚ÌƒpƒX
+  -h [ --help ]                         ƒwƒ‹ƒv‚Ì•\¦
+  -m [ --model ] arg (=CreditModel.txt) ƒ‚ƒfƒ‹ƒtƒ@ƒCƒ‹‚ğw’è
+  -o [ --output ] arg                   ”F¯Œ‹‰Ê‚ğ‰æ‘œ‚Æ‚µ‚Ä•Û‘¶Binput‚ªƒtƒHƒ‹ƒ_‚Ì‚ÍƒtƒHƒ‹ƒ_‚Ö‚ÌƒpƒX
+  -c [ --camera ]                       WebƒJƒƒ‰‚Ì“ü—Í‚ğg—p
+----
 
 ’ˆÓF
 E¡‰ñAƒGƒ‰[ˆ—‚È‚Ç‚Í‘g‚İ‚ñ‚Å‚¢‚Ü‚¹‚ñ‚Ì‚ÅAƒCƒŒƒMƒ…ƒ‰[‚Èg—p–@‚Å—‚¿‚é‚±‚Æ‚ª‚ ‚è‚Ü‚·B
@@ -35,7 +63,8 @@ CreditNumberRecognizer.zip‚ğ‰ğ“€‚·‚é‚ÆAWindows”Å‚ÌÀsƒtƒ@ƒCƒ‹‚ğ‚·‚®—˜—p‚Å‚«‚Ü‚
 
 Hope to doF
 EƒJ[ƒh‚ÌŒX‚«•â³‚ÌÀ‘•
-E•¶š”F¯‚Ì¸“xŒüã
+E•¶š”F¯‚Ì¸“xŒüãi—vŠwKƒf[ƒ^j
 
-ƒrƒWƒ‡ƒ“•ITƒ‰ƒ{@
+
+Š”®‰ïĞƒrƒWƒ‡ƒ“•ITƒ‰ƒ{@
 ŠFì‘ì–ç (http://visitlab.jp)
