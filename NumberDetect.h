@@ -155,5 +155,6 @@ private:
 	static void EvaluateNumberStrings(const std::vector<std::pair<int,int> >& line_pos, std::vector<double>& scores, const std::vector<float>& prj);
 };
 
+
 }
 #endif

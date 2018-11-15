@@ -39,6 +39,14 @@
 
 namespace ccnr{
 
+const NumberDetect::CHAR_EDGE_TYPE
+	NumberDetect::CHAR_BLANK,
+	NumberDetect::CHAR_LEFT,
+	NumberDetect::CHAR_RIGHT,
+	NumberDetect::CHAR_STRING_LEFT,
+	NumberDetect::CHAR_STRING_RIGHT;
+const int NumberDetect::CHAR_EDGE_TYPE_NUM;
+
 NumberDetect::NumberDetect(void)
 {
 	_char_aspect_ratio = 1.5;
