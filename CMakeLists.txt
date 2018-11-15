@@ -30,7 +30,7 @@ message(STATUS "    include path: ${OpenCV_INCLUDE_DIRS}")
 #set(Boost_USE_STATIC_LIBS        OFF)
 set(Boost_USE_MULTITHREADED      ON)
 #set(Boost_USE_STATIC_RUNTIME     OFF)
-find_package(Boost 1.36 REQUIRED
+find_package(Boost 1.57 REQUIRED
              COMPONENTS system filesystem program_options)
 message("## Boost_INCLUDE_DIRS: ${Boost_INCLUDE_DIRS}")
 message("## Boost_LIBRARY_DIRS: ${Boost_LIBRARY_DIRS}")
