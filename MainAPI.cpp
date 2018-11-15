@@ -254,6 +254,9 @@ bool MainAPI::RecognizeVideoCapture(const std::string& output)
 		if (!cv::imwrite(output, card_img)) {
 			std::cerr << "Fail to save " << output << std::endl;
 		}
+		else {
+			std::cout << "Save output as " << output << std::endl;
+		}
 	}
 
 	return true;

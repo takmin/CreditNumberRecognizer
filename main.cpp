@@ -139,7 +139,7 @@ int CommandLineExe(int argc, char * argv[])
 			return -1;
 
 		if (use_camera) {
-			CCNR.RecognizeVideoCapture();
+			CCNR.RecognizeVideoCapture(output);
 		}
 		else if (hasImageExtention(input)) {
 			CCNR.Recognize(input, output, false);
