@@ -54,7 +54,7 @@ public:
 
 	bool RecognizeFolder(const std::string& dir_name, const std::string& save_dir);
 
-	bool RecognizeVideoCapture();
+	bool RecognizeVideoCapture(const std::string& output = std::string());
 
 	ccnr::CreditNumberRecog	CCNR;
 };

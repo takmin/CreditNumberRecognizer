@@ -51,7 +51,7 @@ $ make
 ---
 CreditNumberRecognizer input [option]
 option:
-  input                                 入力画像または画像の入ったフォルダへのパス
+  -i [ --input ] arg                    入力画像または画像の入ったフォルダへのパス
   -h [ --help ]                         ヘルプの表示
   -m [ --model ] arg (=CreditModel.txt) モデルファイルを指定
   -o [ --output ] arg                   認識結果を画像として保存。inputがフォルダの時はフォルダへのパス

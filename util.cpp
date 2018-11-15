@@ -72,7 +72,7 @@ bool ReadImageFilesInDirectory(const std::string& img_dir, std::vector<std::stri
 	for(directory_iterator p(img_dir_path); p != end; ++p){
 		path file_p = p->path();
 		std::string ext = file_p.extension().string();
-		if(ext == ".jpg" || ext == ".JPG" || ext == ".bmp" || ext == ".BMP" || ext == ".png" || ext == ".PNG"){
+		if(hasImageExtention(file_p.string())){
 			image_lists.push_back(file_p.string());
 		}
 	}

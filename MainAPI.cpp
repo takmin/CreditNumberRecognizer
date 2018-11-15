@@ -194,7 +194,7 @@ bool MainAPI::RecognizeFolder(const std::string& directory, const std::string& s
 }
 
 
-bool MainAPI::RecognizeVideoCapture()
+bool MainAPI::RecognizeVideoCapture(const std::string& output)
 {
 	cv::VideoCapture cap(0);
 	if (!cap.isOpened()) {
@@ -249,6 +249,12 @@ bool MainAPI::RecognizeVideoCapture()
 	cv::imshow("image", card_img);
 	cv::waitKey();
 	cv::destroyWindow("image");
+	
+	if (!output.empty()) {
+		if (!cv::imwrite(output, card_img)) {
+			std::cerr << "Fail to save " << output << std::endl;
+		}
+	}
 
 	return true;
 }

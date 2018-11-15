@@ -59,21 +59,22 @@ bool parse_command(int argc, char* argv[], std::string& input,
 	// Setting of option arguments
 	options_description opt("option");
 	opt.add_options()
-		("input", value<std::string>(), "Input image file or directory path")
+		("input,i", value<std::string>()->default_value(std::string()), "Input image file or directory path")
 		("help,h", "print help")
 		("model,m", value<std::string>()->default_value("CreditModel.txt"), "Trained model file path")
 		("output,o", value<std::string>()->default_value(std::string()), "Generate output image or directory path")
 		("camera,c", "Use web camera input");
 
 	// Arguments
-	positional_options_description p;
-	p.add("input", 1);
+	//positional_options_description p;
+	//p.add("input", 1);
 
 	variables_map argmap;
 	try {
 		// Obtain command arguments
 		// parse command line
-		parsed_options parsed = command_line_parser(argc, argv).options(opt).allow_unregistered().positional(p).run();
+		//parsed_options parsed = command_line_parser(argc, argv).options(opt).allow_unregistered().positional(p).run();
+		parsed_options parsed = parse_command_line(argc, argv, opt);
 		store(parsed, argmap);	// store parsed command options into argmap
 		notify(argmap);
 
@@ -89,24 +90,29 @@ bool parse_command(int argc, char* argv[], std::string& input,
 		model_file = argmap["model"].as<std::string>();
 
 		////// verify command arguments ///////
-		if (!use_camera) {
-			if(input.empty()) {
-				throw std::invalid_argument("no arugument of input");
+		if (use_camera) {
+			if (!output.empty() && !hasImageExtention(output)) {
+				throw std::invalid_argument("\"--output\" must be image file path.");
+			}
+		}
+		else {
+			if (input.empty()) {
+				throw std::invalid_argument("\"--input\" argment or \"--camera\" must be specified");
 			}
 			else if (hasImageExtention(input)) {
 				if (!output.empty() && !hasImageExtention(output)) {
-					throw std::invalid_argument("\"output\" must be image file path.");
+					throw std::invalid_argument("\"--output\" must be image file path.");
 				}
 			}
 			else if (is_directory(path(input))) {
 				if (!output.empty() && !is_directory(path(output))) {
-					throw std::invalid_argument("\"output\" must be directory path.");
+					throw std::invalid_argument("\"--output\" must be directory path.");
 				}
 			}
 			else {
 				throw std::invalid_argument("wrong input format");
 			}
-		}		
+		}
 	}
 	catch (const std::exception& e)
 	{

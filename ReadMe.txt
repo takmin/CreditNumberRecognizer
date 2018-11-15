@@ -56,7 +56,7 @@ You can avoid interaction and run this function directly with some arguments.
 ----
 CreditNumberRecognizer input [option]
 option:
-  --input arg                           Input image file or directory path
+  -i [--input ] arg                     Input image file or directory path
   -h [ --help ]                         print help
   -m [ --model ] arg (=CreditModel.txt) Trained model file path
   -o [ --output ] arg                   Generate output image or directory path
