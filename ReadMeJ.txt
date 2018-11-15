@@ -31,7 +31,7 @@ $ make
 ここで、CreditNumberRecognizerという実行ファイルが生成されます。
 
 
-使用手順：
+使用手順（インタラクションモード）：
 1. CreditNumberRecognizerを起動
 2. "command:"というプロンプトが出るので、"load"と打ち込みリターン
 3. "Classifier File:"というプロンプトが出るので、同梱した"CreditModel.txt"への明日を指定
@@ -47,7 +47,7 @@ $ make
 
 
 コマンドラインから直接実行：
-・コマンドラインから直接実行したい場合は以下のように引数を指定します。
+・起動時に引数を指定することで、インタラクションなしに、コマンドラインから直接実行できます。
 ---
 CreditNumberRecognizer input [option]
 option:

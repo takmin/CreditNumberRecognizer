@@ -51,10 +51,10 @@ In addition:
 - at "command:" prompt, enter "h" to see all commands.
 
 
-Excecute directly from command line:
-You can avoid interaction and run this function directly with some arguments.
+Direct Excecution Mode:
+You can avoid interaction and run this function directly with arguments.
 ----
-CreditNumberRecognizer input [option]
+CreditNumberRecognizer [option]
 option:
   -i [--input ] arg                     Input image file or directory path
   -h [ --help ]                         print help
