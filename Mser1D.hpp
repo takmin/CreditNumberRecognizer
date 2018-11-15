@@ -36,6 +36,7 @@
 
 #include <vector>
 #include <algorithm>
+#include <stdexcept>
 
 namespace ccnr{
 
@@ -59,7 +60,8 @@ void Mask1D(const std::vector<_T>& histogram, std::vector<_T>& masked_histogram,
 	
 	assert(mask.size() == histogram.size());
 
-	std::vector<_T>::const_iterator min_it = std::min_element(histogram.begin(), histogram.end());
+	typename std::vector<_T>::const_iterator min_it;
+	min_it = std::min_element(histogram.begin(), histogram.end());
 
 	masked_histogram.resize(histogram.size(), *min_it);
 	int hist_len = histogram.size();
@@ -89,7 +91,8 @@ void CreateMserRegionTree(const std::vector<_T>& histogram, std::vector<REGION_1
 	if(regions.empty()){
 		start = 0;
 		end = histogram.size();
-		std::vector<_T>::const_iterator min_it = std::min_element(histogram.begin(), histogram.end());
+		typename std::vector<_T>::const_iterator min_it;
+		min_it = std::min_element(histogram.begin(), histogram.end());
 		th = (double)(*min_it) - 0.000001;
 	}
 	else{
@@ -197,7 +200,7 @@ void GetLocalVariationMaxima(const std::vector<std::vector<int> >& clustered_idx
 	int num_vec = area_variation.size();
 
 	if(num_vec != clustered_idx.size()){
-		throw std::exception("num_vec != clustered_idx.size()");
+		throw std::invalid_argument("num_vec != clustered_idx.size()");
 	}
 
 	for(int i=0; i<num_vec; i++){

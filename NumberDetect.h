@@ -44,15 +44,15 @@ public:
 	NumberDetect(void);
 	~NumberDetect(void);
 
-	typedef struct{
-		static const int
-			CHAR_BLANK = 0,	// 文字と文字の間
-			CHAR_LEFT = 1,	//文字の右端
-			CHAR_RIGHT = 2,	//文字の左端
-			CHAR_STRING_LEFT = 3,	// 文字列全体の右端（始点）
-			CHAR_STRING_RIGHT = 4;	// 文字列全体の左端（終点）
-		static const int SIZE = 5;
-	}BREAK_TYPE;
+	typedef int CHAR_EDGE_TYPE;
+
+	static const CHAR_EDGE_TYPE
+		CHAR_BLANK = 0,	// 文字と文字の間
+		CHAR_LEFT = 1,	//文字の右端
+		CHAR_RIGHT = 2,	//文字の左端
+		CHAR_STRING_LEFT = 3,	// 文字列全体の右端（始点）
+		CHAR_STRING_RIGHT = 4;	// 文字列全体の左端（終点）
+	static const int CHAR_EDGE_TYPE_NUM = 5;
 
 	typedef enum{
 		TYPE4444,
@@ -90,18 +90,18 @@ public:
 	\param[in] sring_len_div 文字列の長さの標準偏差
 	\paran[in] char_pattern 区切り文字パターン
 	*/
-	static double ExtractCharRange(std::vector<int>& char_breaks, const std::vector<std::vector<double> >& app_costs,
+	static double ExtractCharRange(std::vector<CHAR_EDGE_TYPE>& char_breaks, const std::vector<std::vector<double> >& app_costs,
 		const std::vector<double>& pos_costs, float avg_string_len, float string_len_div,
 		const std::vector<int>& char_pattern, double init_cost = 10000);
 
 	//! クレジットカード番号のパターンを取得
-	static void CreateCreditBreakPattern(std::vector<int>& pattern, CREDIT_PATTERN type = TYPE4444);
+	static void CreateCreditBreakPattern(std::vector<CHAR_EDGE_TYPE>& pattern, CREDIT_PATTERN type = TYPE4444);
 	static void ConvertXtoRects(const std::vector<int>& breaks, std::vector<cv::Rect>& number_rects, 
 		const cv::Rect& region, const CREDIT_PATTERN& pattern);
 
 private:
 	std::vector<CREDIT_PATTERN> _PATTERN_TYPES;
-	std::vector<std::vector<int> > _CHAR_BREAK_PATTERNS;
+	std::vector<std::vector<CHAR_EDGE_TYPE> > _CHAR_BREAK_PATTERNS;
 
 	//! カード番号のある行から文字間の区切り位置を算出
 	/*!

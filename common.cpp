@@ -42,7 +42,7 @@ void ProjectionH(const cv::Mat_<T>& src_mat, cv::Mat& dst_hist)
 	for(int r = 0; r<src_mat.rows; r++){
 		double val = 0;
 		for(int c = 0; c<src_mat.cols; c++){
-			val += src_mat.at<T>(r,c);
+			val += src_mat.template at<T>(r,c);
 		}
 		dst_hist.at<double>(r,0) = val / src_mat.cols;
 	}
@@ -55,7 +55,7 @@ void ProjectionV(const cv::Mat_<T>& src_mat, cv::Mat& dst_hist)
 	for(int c = 0; c<src_mat.cols; c++){
 		double val = 0;
 		for(int r = 0; r<src_mat.rows; r++){
-			val += src_mat.at<T>(r,c);
+			val += src_mat.template at<T>(r,c);
 		}
 		dst_hist.at<double>(0,c) = val / src_mat.rows;
 	}

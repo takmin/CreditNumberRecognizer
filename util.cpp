@@ -157,7 +157,7 @@ cv::Mat ConcatinateImage(const cv::Mat& src1, const cv::Mat& src2, bool hol)
 template<typename T> void SaveMatCSV_T(const std::string& filename, const cv::Mat& mat)
 {
 	T* data_ptr = (T*)mat.data;
-	std::ofstream ofs(filename);
+	std::ofstream ofs(filename.c_str());
 	for(int r=0; r<mat.rows; r++){
 		for(int c=0; c<mat.cols-1; c++){
 			ofs << *data_ptr << ",";

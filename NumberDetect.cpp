@@ -45,9 +45,9 @@ NumberDetect::NumberDetect(void)
 	_char_width_div = 0.2;
 	_min_char_height_ratio = 0.05;
 	_max_char_height_ratio = 0.1;
-	_PATTERN_TYPES.push_back(CREDIT_PATTERN::TYPE4444);
-	_PATTERN_TYPES.push_back(CREDIT_PATTERN::TYPE465);
-	_PATTERN_TYPES.push_back(CREDIT_PATTERN::TYPE464);
+	_PATTERN_TYPES.push_back(TYPE4444);
+	_PATTERN_TYPES.push_back(TYPE465);
+	_PATTERN_TYPES.push_back(TYPE464);
 	std::vector<CREDIT_PATTERN>::iterator it, it_end = _PATTERN_TYPES.end();
 	for(it=_PATTERN_TYPES.begin(); it != it_end; it++){
 		std::vector<int> break_pattern;
@@ -82,19 +82,19 @@ void NumberDetect::ConvertXtoRects(const std::vector<int>& breaks, std::vector<c
 
 	// クレジットカード番号領域格納
 	std::vector<int> break_b, break_e;
-	if(pattern == CREDIT_PATTERN::TYPE4444){
+	if(pattern == TYPE4444){
 		int b[] = {0,5,10,15};
 		int e[] = {4,9,14,19};
 		break_b.insert(break_b.end(),b,b+4);
 		break_e.insert(break_e.end(),e,e+4);
 	}
-	else if(pattern == CREDIT_PATTERN::TYPE465){
+	else if(pattern == TYPE465){
 		int b[] = {0,5,12};
 		int e[] = {4,11,17};
 		break_b.insert(break_b.end(),b,b+3);
 		break_e.insert(break_e.end(),e,e+3);
 	}
-	else if(pattern == CREDIT_PATTERN::TYPE464){
+	else if(pattern == TYPE464){
 		int b[] = {0,5,12};
 		int e[] = {4,11,16};
 		break_b.insert(break_b.end(),b,b+3);
@@ -164,52 +164,52 @@ void NumberDetect::DetectStringHeight(const cv::Mat& edge_img, std::vector<cv::R
 
 
 
-void NumberDetect::CreateCreditBreakPattern(std::vector<int>& pattern, CREDIT_PATTERN type)
+void NumberDetect::CreateCreditBreakPattern(std::vector<CHAR_EDGE_TYPE>& pattern, CREDIT_PATTERN type)
 {
-	pattern.push_back(BREAK_TYPE::CHAR_STRING_LEFT);
+	pattern.push_back(CHAR_STRING_LEFT);
 
-	if(type == CREDIT_PATTERN::TYPE4444){
+	if(type == TYPE4444){
 		for(int j=0; j<4; j++){
 			for(int i=0; i<3; i++){
-				pattern.push_back(BREAK_TYPE::CHAR_BLANK);
+				pattern.push_back(CHAR_BLANK);
 			}
 			if(j<3){
-				pattern.push_back(BREAK_TYPE::CHAR_RIGHT);
-				pattern.push_back(BREAK_TYPE::CHAR_LEFT);
+				pattern.push_back(CHAR_RIGHT);
+				pattern.push_back(CHAR_LEFT);
 			}
 		}
 	}
-	else if(type == CREDIT_PATTERN::TYPE465){
+	else if(type == TYPE465){
 		for(int i=0; i<3; i++){
-			pattern.push_back(BREAK_TYPE::CHAR_BLANK);
+			pattern.push_back(CHAR_BLANK);
 		}
-		pattern.push_back(BREAK_TYPE::CHAR_RIGHT);
-		pattern.push_back(BREAK_TYPE::CHAR_LEFT);
+		pattern.push_back(CHAR_RIGHT);
+		pattern.push_back(CHAR_LEFT);
 		for(int i=0; i<5; i++){
-			pattern.push_back(BREAK_TYPE::CHAR_BLANK);
+			pattern.push_back(CHAR_BLANK);
 		}
-		pattern.push_back(BREAK_TYPE::CHAR_RIGHT);
-		pattern.push_back(BREAK_TYPE::CHAR_LEFT);
+		pattern.push_back(CHAR_RIGHT);
+		pattern.push_back(CHAR_LEFT);
 		for(int i=0; i<4; i++){
-			pattern.push_back(BREAK_TYPE::CHAR_BLANK);
+			pattern.push_back(CHAR_BLANK);
 		}
 	}
-	else if(type == CREDIT_PATTERN::TYPE464){
+	else if(type == TYPE464){
 		for(int i=0; i<3; i++){
-			pattern.push_back(BREAK_TYPE::CHAR_BLANK);
+			pattern.push_back(CHAR_BLANK);
 		}
-		pattern.push_back(BREAK_TYPE::CHAR_RIGHT);
-		pattern.push_back(BREAK_TYPE::CHAR_LEFT);
+		pattern.push_back(CHAR_RIGHT);
+		pattern.push_back(CHAR_LEFT);
 		for(int i=0; i<5; i++){
-			pattern.push_back(BREAK_TYPE::CHAR_BLANK);
+			pattern.push_back(CHAR_BLANK);
 		}
-		pattern.push_back(BREAK_TYPE::CHAR_RIGHT);
-		pattern.push_back(BREAK_TYPE::CHAR_LEFT);
+		pattern.push_back(CHAR_RIGHT);
+		pattern.push_back(CHAR_LEFT);
 		for(int i=0; i<3; i++){
-			pattern.push_back(BREAK_TYPE::CHAR_BLANK);
+			pattern.push_back(CHAR_BLANK);
 		}
 	}
-	pattern.push_back(BREAK_TYPE::CHAR_STRING_RIGHT);
+	pattern.push_back(CHAR_STRING_RIGHT);
 }
 
 
@@ -355,34 +355,34 @@ void NumberDetect::CreateAppearanceCosts(const cv::Mat& edge_img, std::vector<st
 	int block_size = edge_img.rows;
 	CreateBlockDeriv(gprj, block_size, blockderiv);
 
-	app_costs.resize(BREAK_TYPE::SIZE);
+	app_costs.resize(CHAR_EDGE_TYPE_NUM);
 
 	//BREAK_TYPE::CHAR_LEFT：上り勾配の大きさを少し左にずらす
 	std::vector<double> char_left_costs;
 	CreateCharLeftCost(derivmap, char_left_costs, 1);
-	app_costs[BREAK_TYPE::CHAR_LEFT] = char_left_costs;
+	app_costs[CHAR_LEFT] = char_left_costs;
 
 	//BREAK_TYPE::CHAR_RIGHT：下り勾配の大きさを少し右にずらす
 	std::vector<double> char_right_costs;
 	CreateCharRightCost(derivmap, char_right_costs, 1);
-	app_costs[BREAK_TYPE::CHAR_RIGHT] = char_right_costs;
+	app_costs[CHAR_RIGHT] = char_right_costs;
 
 	//BREAK_TYPE::CHAR_STRING_LEFT：CHAR_LEFTに場所による重み付け
 	std::vector<double> char_string_left_costs;
 	//CreateCharStringLeftCost(char_left_costs, integ, char_string_left_costs);
 	CreateCharStringLeftCost(blockderiv, integ, char_string_left_costs, 1);
-	app_costs[BREAK_TYPE::CHAR_STRING_LEFT] = char_string_left_costs;
+	app_costs[CHAR_STRING_LEFT] = char_string_left_costs;
 
 	//BREAK_TYPE::CHAR_STRING_RIGHT：CHAR_RIGHTに場所による重み付け
 	std::vector<double> char_string_right_costs;
 	//CreateCharStringRightCost(char_right_costs, integ, char_string_right_costs);
 	CreateCharStringRightCost(blockderiv, integ, char_string_right_costs, 1);
-	app_costs[BREAK_TYPE::CHAR_STRING_RIGHT] = char_string_right_costs;
+	app_costs[CHAR_STRING_RIGHT] = char_string_right_costs;
 
 	//BREAK_TYPE::CHAR_BLANK：二次微分の大きさ
 	std::vector<double> char_blank_costs;
 	CreateCharBlankCost(derivmap2nd, char_blank_costs);
-	app_costs[BREAK_TYPE::CHAR_BLANK] = char_blank_costs;
+	app_costs[CHAR_BLANK] = char_blank_costs;
 }
 
 
